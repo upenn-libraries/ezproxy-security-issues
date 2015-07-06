@@ -29,7 +29,7 @@ Add an *absolute* equivalent to the `MaxLifetime` config directive. The existing
 
 In this approach, a sucessful login request would set ezproxy session cookie (as usual), but would additionally set a secure cookie (to be sent only via https to the login port). Insecure http requests would require an extra validation parameter (e.g., an HMAC over the original request URI). If the validation parameter is present and valid, the request is served out normally. If present and invalid, send 4xx response. 
 
-If validation param is not present, the client would be redirected to an https validation path (e.g., 302 Location: ht<span>tps://</span>ezproxy.library.edu/validate?request=[original-request-URI]). Validation would proceed in the presence of a valid secure session token (cookie), the server subsequently responding 302 Location: http://\[original-request-URI\]\[validation-param\]
+If validation param is not present, the client would be redirected to an https validation path (e.g., 302 Location: ht&#8203;tps://ezproxy.library.edu/validate?request=[original-request-URI]). Validation would proceed in the presence of a valid secure session token (cookie), the server subsequently responding 302 Location: http://\[original-request-URI\]\[validation-param\]
 
 Standard crypto algorithm caveats would apply (timestamps, nonces, initialization vectors, etc. to avoid replay/chosen plaintext, etc.), but something along the lines of this general approach should allow the prevention of session hijacking in EZProxy. A network middleware implementation could be implemented by proxying access to EZProxy and leveraging the `AcceptX-Forwarded-For` config option, but a native EZProxy implementation would be more straigtforward and performant. 
 
